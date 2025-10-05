@@ -54,8 +54,7 @@
     // Update time every second
     function updateTime() {
       const now = new Date();
-      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
+      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('time').textContent = now.toLocaleString('en-US', options);
     }
     setInterval(updateTime, 1000);
