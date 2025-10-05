@@ -76,6 +76,48 @@
     .top-right input[type="submit"]:hover {
       background-color: #666;
     }
+
+    .center-search {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .center-search input[type="text"] {
+      padding: 12px;
+      font-size: 1.2em;
+      width: 400px;
+      border: none;
+      border-radius: 6px;
+      background-color: #222;
+      color: white;
+      outline: none;
+    }
+
+    .center-search input[type="submit"],
+    .center-search button {
+      padding: 12px 20px;
+      font-size: 1.2em;
+      margin-left: 10px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .center-search input[type="submit"]:hover,
+    .center-search button:hover {
+      background-color: #666;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -60%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
   </style>
 </head>
 <body>
@@ -123,7 +165,43 @@
     }
 
     fetchWeather();
+
+    // Autofocus on load
+    window.onload = () => {
+      document.getElementById('copilotInput').focus();
+    };
+
+    // Shortcut: Press '/' to focus search
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+      e.preventDefault();
+      document.getElementById('copilotInput').focus();
+      }
+    });
+
+    // Voice input (if supported)
+    document.getElementById('voiceBtn').addEventListener('click', () => {
+      const input = document.getElementById('copilotInput');
+      if ('webkitSpeechRecognition' in window) {
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.onresult = (event) => {
+        input.value = event.results[0][0].transcript;
+        };
+        recognition.start();
+      } else {
+        alert("Voice input not supported in this browser.");
+      }
+    });
   </script>
+
+  <div class="center-search">
+    <form action="https://www.bing.com/search" method="get">
+      <input type="text" name="q" id="copilotInput" placeholder="Ask Copilot anything..." />
+      <input type="submit" value="Ask" />
+      <button type="button" id="voiceBtn">🎙️</button>
+    </form>
+  </div>
   
   <div class="top-right">
     <form action="https://duckduckgo.com/" method="get">
