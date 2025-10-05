@@ -13,7 +13,7 @@
       padding-top: 100px;
     }
     #time, #weather {
-      font-size: 10em;
+      font-size: 8em;
       margin: 20px 0;
     }
     #search-bar {
@@ -40,6 +40,7 @@
 <body>
 
   <div id="time">Loading time...</div>
+
   <div id="weather">Loading weather...</div>
 
   <div id="search-bar">
@@ -53,8 +54,8 @@
     // Update time every second
     function updateTime() {
       const now = new Date();
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-                        hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'};
       document.getElementById('time').textContent = now.toLocaleString('en-US', options);
     }
     setInterval(updateTime, 1000);
