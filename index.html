@@ -1,15 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Start Page</title>
+  <meta charset="UTF-8">
+  <title>Start Page</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding-top: 100px;
+    }
+    #time, #weather {
+      font-size: 2em;
+      margin: 20px 0;
+    }
+    #search-bar {
+      margin-top: 40px;
+    }
+    input[type="text"] {
+      padding: 10px;
+      font-size: 1em;
+      width: 300px;
+    }
+    input[type="submit"] {
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #666;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to My Start Page</h1>
-    <p id="datetime"></p>
 
-    <script>
-        const now = new Date();
-        document.getElementById("datetime").innerHTML = now.toLocaleString();
-    </script>
+  <div id="time">Loading time...</div>
+  <div id="weather">Loading weather...</div>
+
+  <div id="search-bar">
+    <form action="https://duckduckgo.com/" method="get">
+      <input type="text" name="q" placeholder="Search DuckDuckGo">
+      <input type="submit" value="Search">
+    </form>
+  </div>
+
+  <script>
+    // Update time every second
+    function updateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      document.getElementById('time').textContent = now.toLocaleString('en-US', options);
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // Fetch weather using OpenWeatherMap API
+    async function fetchWeather() {
+      const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
+      const city = "Front Royal"; // You can change this to your preferred location
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const temp = Math.round(data.main.temp);
+        const description = data.weather[0].description;
+        const icon = data.weather[0].icon;
+        const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
+        document.getElementById('weather').innerHTML =
+          `🌡️ ${temp}°F - ${description} <img src="${iconUrl}" alt="${description}" style="vertical-align:middle;">`;
+      } catch (error) {
+        document.getElementById('weather').textContent = "Unable to fetch weather.";
+      }
+    }
+
+    fetchWeather();
+  </script>
+
 </body>
 </html>
