@@ -32,7 +32,11 @@
     <div class="splash">
         <h1 class="splash-head">CLOCK GOES HERE</h1>
         <p class="splash-subhead">
-            SEARCH BOX GOES HERE
+            <p id="datetime"></p>
+            <script>
+                const now = new Date();
+                document.getElementById("datetime").innerHTML = now.toLocaleString();
+            </script>
         </p>
         <p>
             <a href="http://purecss.io" class="pure-button pure-button-primary">SEARCH</a>
