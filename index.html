@@ -158,7 +158,7 @@
         const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
 
         document.getElementById('weather').innerHTML =
-          `${city}<br>${temp}°C - ${description} <img src="${iconUrl}" alt="${description}" style="vertical-align:middle;">`;
+          `${city}<br>${temp}°F - ${description} <img src="${iconUrl}" alt="${description}" style="vertical-align:middle;">`;
       } catch (error) {
         document.getElementById('weather').textContent = "Weather unavailable";
       }
