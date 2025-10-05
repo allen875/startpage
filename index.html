@@ -5,79 +5,88 @@
   <title>Start Page</title>
   <style>
     body {
-      background-color: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
-      padding-top: 100px;
-    }
-    #time, #weather {
-      font-size: 8em;
-      margin: 20px 0;
-    }
-    #search-bar {
-      margin-top: 40px;
-    }
-    input[type="text"] {
-      padding: 10px;
-      font-size: 1em;
-      width: 300px;
-    }
-    input[type="submit"] {
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #444;
+      padding: 0;
+      background: url('your-cityscape-image.jpg') no-repeat center center fixed;
+      background-size: cover;
       color: white;
-      border: none;
-      cursor: pointer;
+      font-family: 'Segoe UI', sans-serif;
     }
-    input[type="submit"]:hover {
-      background-color: #666;
+
+    .top-left, .bottom-left, .bottom-right {
+      position: absolute;
+      padding: 20px;
+    }
+
+    .top-left {
+      top: 0;
+      left: 0;
+      font-size: 1.2em;
+    }
+
+    .bottom-left {
+      bottom: 0;
+      left: 0;
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    .bottom-right {
+      bottom: 0;
+      right: 0;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .bottom-right a img {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 2px black);
     }
   </style>
 </head>
 <body>
 
-  <div id="time">Loading time...</div>
-
-  <div id="weather">Loading weather...</div>
-
-  <div id="search-bar">
-    <form action="https://duckduckgo.com/" method="get">
-      <input type="text" name="q" placeholder="Search DuckDuckGo">
-      <input type="submit" value="Search">
-    </form>
+  <div class="top-left" id="weather">Loading weather...</div>
+  <div class="bottom-left" id="datetime">Loading time...</div>
+  <div class="bottom-right">
+    <a href="https://www.google.com"><img src="https://www.google.com/favicon.ico" alt="Google"></a>
+    <a href="https://www.youtube.com"><img src="https://www.youtube.com/favicon.ico" alt="YouTube"></a>
+    <a href="https://twitter.com"><img src="https://abs.twimg.com/favicons/twitter.ico" alt="Twitter"></a>
+    <a href="https://facebook.com"><img src="https://www.facebook.com/favicon.ico" alt="Facebook"></a>
+    <a href="https://reddit.com"><img src="https://www.redditstatic.com/desktop2x/img/favicon/favicon-32x32.png" alt="Reddit"></a>
   </div>
 
   <script>
-    // Update time every second
+    // Date and Time
     function updateTime() {
       const now = new Date();
-      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('time').textContent = now.toLocaleString('en-US', options);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('datetime').textContent = `${now.toLocaleDateString(undefined, options)} ${time}`;
     }
     setInterval(updateTime, 1000);
     updateTime();
 
-    // Fetch weather using OpenWeatherMap API
+    // Weather
     async function fetchWeather() {
-      const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
-      const city = "Front Royal"; // You can change this to your preferred location
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=imperial&appid=${apiKey}`;
+      const apiKey = "YOUR_API_KEY"; // Replace with your OpenWeatherMap API key
+      const city = "Front Royal";
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
       try {
         const response = await fetch(url);
         const data = await response.json();
-        const temp = Math.round(data.main.temp);
+        const temp = data.main.temp.toFixed(1);
         const description = data.weather[0].description;
         const icon = data.weather[0].icon;
-        const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+        const iconUrl = `https://openweathermap.org/img/wn/${icon}.png`;
 
         document.getElementById('weather').innerHTML =
-          `🌡️ ${temp}°F - ${description} <img src="${iconUrl}" alt="${description}" style="vertical-align:middle;">`;
+          `${city}<br>${temp}°C - ${description} <img src="${iconUrl}" alt="${description}" style="vertical-align:middle;">`;
       } catch (error) {
-        document.getElementById('weather').textContent = "Unable to fetch weather.";
+        document.getElementById('weather').textContent = "Weather unavailable";
       }
     }
 
