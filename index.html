@@ -78,6 +78,17 @@
       background-color: #666;
     }
 
+    .center-time {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 5em;
+      font-weight: bold;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
     .center-search {
       position: absolute;
       top: 50%;
@@ -202,6 +213,8 @@
       }
     });
   </script>
+
+  <div class=""center-time" id="timeDisplay"></div>
 
   <div class="center-search">
     <form action="https://www.bing.com/search" method="get">
